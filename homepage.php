@@ -63,8 +63,38 @@
 			</script>
 		</ul>
 		
-		<h1>Instances status</h1>
-		
+		<div class="col-md-9">
+			<h1>Instances status</h1>		
+			<table class="table table-striped">  
+				<thead>  
+				  <tr>  
+				    <th>Instance ID</th>  
+				    <th>Type</th>  
+				    <th>Status</th>    
+				  </tr>  
+				</thead>  
+				<tbody>  
+				  <tr>  
+				    <td>001</td>  
+				    <td>Android </td>  
+				    <td><span class="label label-success">Available</span></td>    
+				  </tr>  
+				  <tr>  
+				    <td>002</td>  
+				    <td>IOS</td>  
+				    <td><span class="label label-warning">Launching...</span></td>   
+				  </tr>  
+				  <tr>  
+				    <td>003</td>  
+				    <td>Windows Phone</td>  
+				    <td><span class="label label-danger">Stop</span></td>   
+				  </tr>  
+				</tbody>  
+			</table>
+			<br>
+			<button type="button" class="btn btn-default" >Launch new instance</button>
+		</div>
+
 	</body>
 
 </html>
