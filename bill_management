@@ -9,7 +9,6 @@
 	}
 	
 	/* free result set */
-			//$result->close();
 	mysqli_close($con);
 ?>
 
@@ -52,9 +51,9 @@
 		</nav>
 		
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="#">Home</a></li>
+			<li><a href="homepage.php">Home</a></li>
 			<li><a href="user_management.php">User</a></li>
-			<li><a href="bill_management">Bill & Usage</a></li>
+			<li class="active"><a href="#">Bill & Usage</a></li>
 			<script>
 				$('#myTab a').click(function (e) {
 					e.preventDefault()
@@ -62,8 +61,22 @@
 				})
 			</script>
 		</ul>
-		
-		<h1>Instances status</h1>
+		<br><br><br>
+		<div class="col-md-2" >
+			<!--the category section-->
+			<div class="list-group center-block" style="margin:10px">
+				<a href="#" data-toggle="modal" class="list-group-item">Make Payment</a>
+				<a href="#" class="list-group-item">Balance Review</a>
+				<a href="#" class="list-group-item">Payment History</a>
+				<script>
+				$('.list-group-item').on('click',function(e){
+				var previous = $(this).closest(".list-group").children(".active");
+				previous.removeClass('active'); // previous list-item
+				$(e.target).addClass('active'); // activated list-item
+				});
+				</script>
+			</div>
+		</div>
 		
 	</body>
 

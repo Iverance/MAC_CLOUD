@@ -52,8 +52,8 @@
 		</nav>
 		
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="#">Home</a></li>
-			<li><a href="user_management.php">User</a></li>
+			<li><a href="homepage.php">Home</a></li>
+			<li class="active"><a href="#">User</a></li>
 			<li><a href="bill_management">Bill & Usage</a></li>
 			<script>
 				$('#myTab a').click(function (e) {
@@ -62,8 +62,21 @@
 				})
 			</script>
 		</ul>
-		
-		<h1>Instances status</h1>
+		<br><br><br>
+		<div class="col-md-2" >
+			<!--the category section-->
+			<div class="list-group center-block" style="margin:10px">
+				<a href="#" data-toggle="modal" class="list-group-item">Edit Profile</a>
+				<a href="#" class="list-group-item">Reset Password</a>
+				<script>
+				$('.list-group-item').on('click',function(e){
+				var previous = $(this).closest(".list-group").children(".active");
+				previous.removeClass('active'); // previous list-item
+				$(e.target).addClass('active'); // activated list-item
+				});
+				</script>
+			</div>
+		</div>
 		
 	</body>
 
