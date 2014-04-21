@@ -16,11 +16,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<script src="jQuery.js"></script>
+		<script src="js/jQuery.js"></script>
 		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<title>MAC Cloud</title>
+		<title>MAS Cloud</title>
 	</head>
 	<body class="mainBGcolor">
 	
@@ -34,7 +34,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.php" >MAC Cloud</a>
+					<a class="navbar-brand" href="index.php" >MAS Cloud</a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -92,9 +92,41 @@
 				</tbody>  
 			</table>
 			<br>
-			<button type="button" class="btn btn-default" >Launch new instance</button>
+			<a href="#launch_ins" data-toggle="modal">
+				<button type="button" class="btn btn-default">Launch new instance</button>
+			</a>
 		</div>
 
+		<!--launch form-->
+		<form action="command_py.php" name="launch_ins" method="post">
+			<div class = "modal fade" id = "launch_ins" role ="dialog">
+				<div class ="modal-dialog">
+					<div class = "modal-content">
+						<div class = "modal-header">
+							<h4>Create a Tack</h4>
+						</div>
+						<div class ="modal-body">						
+							<b>Instance Type Settings: </b>
+							<select name="settings">
+								<option value="AND">Android</option>
+								<option value="IOS">IOS</option>
+								<option value="WP">Windows Phone</option>
+							</select>					
+						</div>
+						<div class = "modal-footer">
+							<a class = "btn btn-default" data-dismiss = "modal">Cancel</a>
+							<a class = "btn btn-primary" data-dismiss = "modal" onclick="submitIntstanceType();">Create</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script type="text/javascript">
+			function submitIntstanceType() {
+				document.launch_ins.submit();
+			}
+			</script>
+		</form>	
 	</body>
 
 </html>

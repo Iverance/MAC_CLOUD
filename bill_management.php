@@ -7,19 +7,18 @@
 	if(isset($_SESSION['username'])) {
 		$userName = "".$_SESSION['username']."";
 	}
-	
-	/* free result set */
+
 	mysqli_close($con);
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html>	
 <html>
     <head>
 		<script src="jQuery.js"></script>
 		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<title>MAC Cloud</title>
+		<title>MAS Cloud</title>
 	</head>
 	<body class="mainBGcolor">
 	
@@ -33,7 +32,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.php" >MAC Cloud</a>
+					<a class="navbar-brand" href="index.php" >MAS Cloud</a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -42,7 +41,7 @@
 							<?php 
 								if(isset($_SESSION['username'])) {
 									echo $userName;
-								}
+								}else {echo "fuck";}
 							?></a>
 						</li>
 					</dl>
@@ -61,13 +60,12 @@
 				})
 			</script>
 		</ul>
-		<br><br><br>
+		<br><br>
 		<div class="col-md-2" >
 			<!--the category section-->
 			<div class="list-group center-block" style="margin:10px">
-				<a href="#" data-toggle="modal" class="list-group-item">Make Payment</a>
-				<a href="#" class="list-group-item">Balance Review</a>
-				<a href="#" class="list-group-item">Payment History</a>
+				<a href="#" data-toggle="modal" class="list-group-item">Edit Profile</a>
+				<a href="#" class="list-group-item">Reset Password</a>
 				<script>
 				$('.list-group-item').on('click',function(e){
 				var previous = $(this).closest(".list-group").children(".active");

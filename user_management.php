@@ -9,7 +9,6 @@
 	}
 	
 	/* free result set */
-			//$result->close();
 	mysqli_close($con);
 ?>
 
@@ -20,7 +19,7 @@
 		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-		<title>MAC Cloud</title>
+		<title>MAS Cloud</title>
 	</head>
 	<body class="mainBGcolor">
 	
@@ -34,7 +33,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="index.php" >MAC Cloud</a>
+					<a class="navbar-brand" href="index.php" >MAS Cloud</a>
 				</div>
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -54,7 +53,7 @@
 		<ul class="nav nav-tabs">
 			<li><a href="homepage.php">Home</a></li>
 			<li class="active"><a href="#">User</a></li>
-			<li><a href="bill_management">Bill & Usage</a></li>
+			<li><a href="bill_management.php">Bill & Usage</a></li>
 			<script>
 				$('#myTab a').click(function (e) {
 					e.preventDefault()
@@ -62,7 +61,7 @@
 				})
 			</script>
 		</ul>
-		<br><br><br>
+		<br><br>
 		<div class="col-md-2" >
 			<!--the category section-->
 			<div class="list-group center-block" style="margin:10px">

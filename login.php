@@ -6,7 +6,7 @@
 <!DOCTYPE html>   
 <html>
   <head>
-    <title>MAC Cloud System</title>
+    <title>MAS Cloud System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet" media="screen">
@@ -17,19 +17,18 @@
 
   <body>
 
-    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
       <div class="container" >
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.php" >MAC Cloud Inc.</a>
+          <a class="navbar-brand" href="index.php" >MAS Cloud</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <div class="collapse navbar-collapse navbar-ex1-collapse pull-right">
           <ul class="nav navbar-nav">
             <!--<li><a href="#about"></a></li>
             <li><a href="#services">Learn More</a></li> -->
             <li><a href="register.php">Register</a></li>
-            <li><a href="Contact/contact.php">Contact</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container -->
@@ -51,7 +50,7 @@
 			<form method="POST" action="checklogin.php" accept-charset="UTF-8" role="form" id="loginform" class="form-signin">
 				<input name="_token" type="hidden" value="GjBJTkLmD95trVYO4nUvfxiZKuhQcQxegyyUmD2W">
 				<fieldset>
-			  		<h2 class="sign-up-title"><center>MAC Cloud Sign In</center></h2>
+			  		<h2 class="sign-up-title"><center>MAS Cloud Sign In</center></h2>
 			  		<hr class="colorgraph">
 					<font color="red"><center>
 					<?php $reasons = array("passwordErr" => "Wrong Username or Password!", "blank" => "You have left one or more fields blank.");
