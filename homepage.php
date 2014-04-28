@@ -6,6 +6,8 @@
 	
 	if(isset($_SESSION['username'])) {
 		$userName = "".$_SESSION['username']."";
+	}else {
+		header("location: login.php");
 	}
 	
 	/* free result set */

@@ -13,7 +13,7 @@ $username = stripslashes($username);
 $password = stripslashes($password);
 $username = mysql_real_escape_string($username);
 $password = mysql_real_escape_string($password);
-$sql="SELECT * FROM user WHERE name='$username' AND pw='$password'";
+$sql="SELECT * FROM user WHERE userName='$username' AND pw='$password'";
 $result=mysql_query($sql);
 
 
