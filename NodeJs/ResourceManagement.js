@@ -2,6 +2,7 @@ var mysql = require('mysql');
 var restify = require('restify');
 var http = require('http');
 var url = require('url');
+var heartBeat = require('./HeartbeatReset.js');
 
 // Create mysql connection
 var connection = mysql.createConnection( {
@@ -26,8 +27,25 @@ var app = restify.createServer();
 app.use(restify.queryParser());
 app.use(restify.bodyParser());
 
+// Start heartbeat monitor
+heartBeat.start( connection );
+
+
+// Rest handler
 app.get('/resource/heartbeat', function(req, res){
-	res.send( 'res: heartbeat' + req.query.agentId );
+	if( typeof req.query.agentId != 'undefined' )
+	{
+		var agentId = req.query.agentId;
+		var queryString = "UPDATE regi_machines SET heartbeat='1' WHERE machineId='" + agentId + "';";
+		var query = connection.query( queryString, function(err, rows){
+			if( err ){
+				res.send( "heartbeat: failed" );
+				console.log( rows );
+			}else{
+				res.send( "heartbeat: success" );
+			}
+		});
+	}
 });
 
 app.get('/resource/registerAgentId', function(req, res){
@@ -36,12 +54,13 @@ app.get('/resource/registerAgentId', function(req, res){
 	var queryString = "INSERT INTO regi_machines (status,type,userId) SELECT '" + agentId + "','" + deviceType + "',userId FROM user WHERE userName = 'mascloud';";
 	var query = connection.query( queryString, function(err, rows){
 		if( err ){
-			throw err;
+			res.send( "-1" );
+			console.log( err );
 		}else{
+			res.send( "" + rows.insertId );
 			console.log( rows );
 		}
 	});
-	res.send( 'res: registerAgentId ' + req.query.agentId + " " + req.params.agentId + " " + req.query.deviceType + " " + req.params.deviceType );
 });
 
 app.get('/resource/runningInstances', function(req, res){
