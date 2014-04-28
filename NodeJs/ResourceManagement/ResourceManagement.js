@@ -2,7 +2,8 @@ var mysql = require('mysql');
 var restify = require('restify');
 var http = require('http');
 var url = require('url');
-var heartBeat = require('./HeartbeatReset.js');
+var heartBeat = require('./ResourceMonitor.js');
+var scheduler = require('./Scheduler.js');
 var updateRecord = require('./UpdateRecord.js');
 var exec = require('child_process').exec;
 
@@ -31,6 +32,9 @@ app.use(restify.bodyParser());
 
 // Start heartbeat monitor
 heartBeat.start( connection );
+
+// Start schedular
+scheduler.start( connection );
 
 function handleResponse( err, res, validResponse ){
 	if( err ){
@@ -65,7 +69,7 @@ app.get('/resource/registerAgentId', function(req, res){
 app.get('/resource/launchAgent', function(req, res){
 	var agentId = req.query.agentId;
 	var userId = req.query.userId;
-	var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "' WHERE machineId='" + agentId + "';";
+	var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='5' WHERE machineId='" + agentId + "';";
 	var query = connection.query( queryString, function(err, rows){
 		handleResponse( err, res, agentId );
 		exec("curl http://localhost:8000/resource/updateLaunchedAgent?agentId='" + agentId + "'", function (error, stdout, stderr) {
@@ -83,7 +87,7 @@ app.get('/resource/launchAgent', function(req, res){
 app.get('/resource/terminateAgent', function(req, res){
 	var agentId = req.query.agentId;
 	var userId = req.query.userId;
-	var queryString = "UPDATE regi_machines SET status='terminating',userId='2' WHERE machineId='" + agentId + "';";
+	var queryString = "UPDATE regi_machines SET status='terminating',timeout='5' WHERE machineId='" + agentId + "';";
 	var query = connection.query( queryString, function(err, rows){
 		handleResponse( err, res, agentId );
 		exec("curl http://localhost:8000/resource/updateTerminatedAgent?agentId='" + agentId + "'", function (error, stdout, stderr) {
@@ -109,7 +113,7 @@ app.get('/resource/updateLaunchedAgent', function(req, res){
 
 app.get('/resource/updateTerminatedAgent', function(req, res){
 	var agentId = req.query.agentId;
-	var queryString = "UPDATE regi_machines SET status='idle' WHERE machineId='" + agentId + "';";
+	var queryString = "UPDATE regi_machines SET status='idle',userId='2' WHERE machineId='" + agentId + "';";
 	var query = connection.query( queryString, function(err, rows){
 		handleResponse( err, res, agentId );
 		updateRecord.updateRecordTerminated( agentId, connection );
