@@ -3,6 +3,7 @@ var restify = require('restify');
 var http = require('http');
 var url = require('url');
 var heartBeat = require('./HeartbeatReset.js');
+var updateRecord = require('./UpdateRecord.js');
 var exec = require('child_process').exec;
 
 // Create mysql connection
@@ -102,6 +103,7 @@ app.get('/resource/updateLaunchedAgent', function(req, res){
 	var queryString = "UPDATE regi_machines SET status='launched' WHERE machineId='" + agentId + "';";
 	var query = connection.query( queryString, function(err, rows){
 		handleResponse( err, res, agentId );
+		updateRecord.updateRecordLaunched( agentId, connection );
 	});
 });
 
@@ -110,6 +112,7 @@ app.get('/resource/updateTerminatedAgent', function(req, res){
 	var queryString = "UPDATE regi_machines SET status='idle' WHERE machineId='" + agentId + "';";
 	var query = connection.query( queryString, function(err, rows){
 		handleResponse( err, res, agentId );
+		updateRecord.updateRecordTerminated( agentId, connection );
 	});
 });
 

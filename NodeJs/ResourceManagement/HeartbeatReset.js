@@ -1,12 +1,12 @@
 ( function() {
 
-	function start( database ) {
+	function start( connection ) {
 		
 		// Setup the timeout handler
 		var timeoutProtect = setInterval( function() {
 						// Get machineId, heartbeat, health
 			var queryGetHealth = "SELECT regi_machines.machineId,regi_machines.heartbeat,regi_machines.health FROM mac_web.regi_machines;";
-			var query = database.query( queryGetHealth, function(err, rows){
+			var query = connection.query( queryGetHealth, function(err, rows){
 
 				if( err ){
                                         console.log( err );
@@ -29,10 +29,10 @@
 							queryUpdateHealth = "UPDATE regi_machines SET health='0' WHERE machineId='" + rows[i].machineId + "';"; 			
 						}
 
-						// Reset heart beats in database
+						// Reset heart beats in connection
 						if( queryUpdateHealth.length > 0 )
 						{
-                	       		        	var query = database.query( queryUpdateHealth, function(err, rows){
+                	       		        	var query = connection.query( queryUpdateHealth, function(err, rows){
                 	                        		if( err ){
                 	                               	 		console.log( err );
                 	                        		}else{
@@ -43,9 +43,9 @@
 					}
                         	}
 				
-				// Reset heart beats in database
+				// Reset heart beats in connection
         			var queryResetHeartbeat = "UPDATE regi_machines SET heartbeat='0';";
-				var query = database.query( queryResetHeartbeat, function(err, rows){
+				var query = connection.query( queryResetHeartbeat, function(err, rows){
 	            		    	if( err ){
 						console.log( err );
              			   	}else{
@@ -53,7 +53,7 @@
                 			}
         			});
 			});
-		}, 10000);
+		}, 20000);
 	}
 
 	module.exports.start = start;
