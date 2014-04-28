@@ -105,7 +105,7 @@
 				<div class ="modal-dialog">
 					<div class = "modal-content">
 						<div class = "modal-header">
-							<h4>Create a Tack</h4>
+							<h4>Launch An Instance</h4>
 						</div>
 						<div class ="modal-body">						
 							<b>Instance Type Settings: </b>
@@ -123,9 +123,31 @@
 				</div>
 			</div>
 
+		<!--launch form-->
+			<div class = "modal fade" id = "launch_not_supported" role ="dialog">
+				<div class ="modal-dialog">
+					<div class = "modal-content">
+						<div class = "modal-header">
+							<h4>Unsupported Device</h4>
+						</div>
+						<div class ="modal-body">						
+							<b>Instance Not Supported Yet!</b>					
+						</div>
+						<div class = "modal-footer">
+							<a class = "btn btn-default" data-dismiss = "modal">Cancel</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<script type="text/javascript">
-			function submitIntstanceType() {
-				document.launch_ins.submit();
+			function submitIntstanceType() {				
+				if( document.launch_ins.settings.value == "AND" ){
+					document.launch_ins.submit();
+				}
+				else {
+					$('#launch_not_supported').modal('show');
+				}
 			}
 			</script>
 		</form>	
