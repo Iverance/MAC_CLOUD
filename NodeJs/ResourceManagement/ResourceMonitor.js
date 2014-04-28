@@ -42,10 +42,10 @@
                 	                                		console.log( 'Reseting health' );
                 		                        	}
         		                        	}); 			
-						}					
-		
-                                		// Remove if poor health
-						if( rows[i].heartbeat == '0' && rows[i].health == '0'  && rows[i].userId != userAdmin && rows[i].userId != userSupport ){
+						}
+
+						// Move idle devices to admin
+						if( rows[i].status == 'idle' && rows[i].userId != userAdmin ){
 							queryUpdateHealth = "UPDATE regi_machines SET userId='" + userAdmin + "' WHERE machineId='" + rows[i].machineId + "';";
 							connection.query( queryUpdateHealth, function(err, rows){
                 	                        		if( err ){
@@ -54,10 +54,21 @@
                 	                                		console.log( 'Reseting health' );
                 		                        	}
         		                        	}); 			
-						}						
+						}					
 		
+                                		// Remove if poor health
+						if( rows[i].heartbeat == '0' && rows[i].health == '0'  && rows[i].userId != userAdmin && rows[i].userId != userSupport ){
+							queryUpdateHealth = "UPDATE regi_machines SET userId='" + userSupport + "' WHERE machineId='" + rows[i].machineId + "';";
+							connection.query( queryUpdateHealth, function(err, rows){
+                	                        		if( err ){
+                	                               	 		console.log( err );
+                	                        		}else{
+                	                                		console.log( 'Reseting health' );
+                		                        	}
+        		                        	}); 			
+						}								
 						// Set health to good if heartbeat and was in bad health
-						if( rows[i].heartbeat == '1' && health == 0 ){
+						else if( rows[i].heartbeat == '1' && health == 0 ){
 							queryUpdateHealth = "UPDATE regi_machines SET health='" + healthReset + "' WHERE machineId='" + rows[i].machineId + "';";
 							connection.query( queryUpdateHealth, function(err, rows){
                 	                        		if( err ){
@@ -66,11 +77,9 @@
                 	                                		console.log( 'Reseting health' );
                 		                        	}
         		                        	}); 			
-						}
-						
-						// Set health to poor if no heartbeat
-									
-						if( rows[i].heartbeat == '0' && health > 0 ){
+						}						
+						// decrease health to poor if no heartbeat									
+						else if( rows[i].heartbeat == '0' && health > 0 ){
 							queryUpdateHealth = "UPDATE regi_machines SET health='" + (health - 1) + "' WHERE machineId='" + rows[i].machineId + "';";
 							connection.query( queryUpdateHealth, function(err, rows){
                 	                        		if( err ){
