@@ -12,7 +12,7 @@
 	}
 
 	function updateRecordTerminated( agentId, connection ) {
-		var queryString = "UPDATE run_machine_record SET end=UNIX_TIMESTAMP() WHERE regi_machineId = '" + agentId + "';";
+		var queryString = "UPDATE run_machine_record SET end=IF( end IS NULL, UNIX_TIMESTAMP(), end) WHERE regi_machineId = '" + agentId + "';";
 		var query = connection.query( queryString, function(err, rows){		
 			if( err ){
                 		console.log( err );
