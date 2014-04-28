@@ -64,8 +64,9 @@
 		<div class="col-md-2" >
 			<!--the category section-->
 			<div class="list-group center-block" style="margin:10px">
-				<a href="#" data-toggle="modal" class="list-group-item">Edit Profile</a>
-				<a href="#" class="list-group-item">Reset Password</a>
+				<a href="#" data-toggle="modal" class="list-group-item">Make Payment</a>
+				<a href="#" class="list-group-item">Balance Review</a>
+				<a href="#" class="list-group-item">Payment History</a>
 				<script>
 				$('.list-group-item').on('click',function(e){
 				var previous = $(this).closest(".list-group").children(".active");

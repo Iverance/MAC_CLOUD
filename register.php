@@ -6,7 +6,7 @@
         $email=$_POST['email'];
         $userPassword=$_POST['password'];      
         //check if username and email are in DB
-        $sql="SELECT * FROM user WHERE userName='$name' OR email='$email'";
+        $sql="SELECT * FROM user WHERE userName='$name' OR mail='$email'";
         $result=mysqli_query($con,$sql);
         $count=mysqli_num_rows($result);
         //insert into DB if username and email are unique
@@ -15,7 +15,7 @@
 					echo 'Could not run query: ' . mysql_error();
         	die(header("location:register.php?registrationFailed=true&reason=userNameOrEmailNonUnique"));
         } else {
-			$sql = "INSERT INTO user (name, mail, pw) VALUES('{$userName}', '{$email}', '{$userPassword}')";
+			$sql = "INSERT INTO user (userName, mail, pw) VALUES('{$userName}', '{$email}', '{$userPassword}')";
 			if (!mysqli_query($con,$sql)) 
 			{
 				die('Error: ' . mysqli_error($con));
