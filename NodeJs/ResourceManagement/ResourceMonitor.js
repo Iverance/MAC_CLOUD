@@ -1,6 +1,7 @@
 ( function() {
+var updateRecord = require('./UpdateRecord.js');
 	
-	var healthReset = '2';
+	var healthReset = '10';
 	var userAdmin ='2';
 	var userSupport = '3';
 	function start( connection ) {
@@ -65,7 +66,8 @@
                 	                        		}else{
                 	                                		console.log( 'Reseting health' );
                 		                        	}
-        		                        	}); 			
+        		                        	});
+							updateRecord.updateRecordTerminated( rows[i].machineId, connection ); 			
 						}								
 						// Set health to good if heartbeat and was in bad health
 						else if( rows[i].heartbeat == '1' && health == 0 ){

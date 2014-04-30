@@ -2,16 +2,13 @@ var mysql = require('mysql');
 var restify = require('restify');
 var http = require('http');
 var url = require('url');
-var heartBeat = require('./ResourceMonitor.js');
-var scheduler = require('./Scheduler.js');
-var updateRecord = require('./UpdateRecord.js');
 var exec = require('child_process').exec;
 
 // Create mysql connection
 var connection = mysql.createConnection( {
-	host		: 'macdb.ctijsbuenarr.us-west-2.rds.amazonaws.com',
-	user		: 'mac',
-	password	: 'mac4thewin',
+	host		: 'freesql.ctijsbuenarr.us-west-2.rds.amazonaws.com',
+	user		: 'admin',
+	password	: 'adminpasswd',
 });
 
 // Connect to mysql connection
@@ -30,36 +27,40 @@ var app = restify.createServer();
 app.use(restify.queryParser());
 app.use(restify.bodyParser());
 
-/*INSERT INTO `mac_web`.`bill`
-(`userId`)
-SELECT
-userId FROM user WHERE userId='3';*/
+// Defines/Global
+var cost = 0.0001;
 
 // Setup the timeout handler
 var timeoutProtect = setInterval( function() {
 	// Generate new bill
-	var queryGetHealth = "SELECT userId,payId,start,end FROM mac_web.run_machine_record WHERE payId IS NULL AND end IS NOT NULL;";
-	var query = connection.query( queryGetHealth, function(err, rows)
-	{
+	var queryGetMachineRecordString = "SELECT instanceId,userId,start,end FROM mac_web.run_machine_record WHERE end IS NOT NULL AND start IS NOT NULL AND processed=0";
+	var query = connection.query( queryGetMachineRecordString, function(err, rows){
 		if( err ){
 			console.log( err );
 		}else{
 			console.log( rows );
 			for( i = 0; i < rows.length; i++ )
 			{
-				var timeout = parseInt( rows[i].timeout );
-				var health = parseInt( rows[i].health );
-				// Process timeout for pending devices
-				if( timeout > 0 ){
-					var queryAddNewBill = "UPDATE regi_machines SET timeout='" + ( timeout - 1 ) + "' WHERE machineId='" + rows[i].machineId + "';";
-					connection.query( queryUpdateHealth, function(err, rows){
-						if( err ){
-								console.log( err );
-						}else{
-								console.log( 'Reseting health' );
-						}
-					}); 			
-				}
+				var balance = parseInt( rows[i].end ) - parseInt( rows[i].start );
+				// Add new statement
+				var queryAddNewBillString = "INSERT INTO mac_web.statements(amount,dueDate,billingDate,userId) SELECT '" + balance + "',DATE_ADD(NOW(), INTERVAL 30 DAY ),NOW(),userId FROM mac_web.user WHERE userId ='" + rows[i].userId +"';";
+				connection.query( queryAddNewBillString, function(err, rows ){
+					if( err ){
+							console.log( err );
+					}else{
+							console.log( 'New Bill Added' );
+					}
+				});
+
+				// Marked record as processed
+				var queryUpdateRecordString = "UPDATE mac_web.run_machine_record SET processed =1 WHERE instanceId='" + rows[i].instanceId + "';";
+				connection.query( queryUpdateRecordString, function(err, rows ){
+					if( err ){
+							console.log( err );
+					}else{
+							console.log( 'UpdateRecord' );
+					}
+				});  
 			}
 		}
 	});
