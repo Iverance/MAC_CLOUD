@@ -9,9 +9,9 @@ var exec = require('child_process').exec;
 
 // Create mysql connection
 var connection = mysql.createConnection( {
-	host		: 'macdb.ctijsbuenarr.us-west-2.rds.amazonaws.com',
-	user		: 'mac',
-	password	: 'mac4thewin',
+	host		: 'freesql.ctijsbuenarr.us-west-2.rds.amazonaws.com',
+	user		: 'admin',
+	password	: 'adminpasswd',
 });
 
 // Connect to mysql connection
@@ -36,6 +36,10 @@ heartBeat.start( connection );
 // Start schedular
 scheduler.start( connection );
 
+// Defines (global variable)
+var MAX_INSTANCE = 10;
+var MIN_INSTANCE =  0;
+
 function handleResponse( err, res, validResponse ){
 	if( err ){
 		res.send( "-1" );
@@ -47,18 +51,18 @@ function handleResponse( err, res, validResponse ){
 
 // Rest handler
 app.get('/resource/heartbeat', function(req, res){
-	if( typeof req.query.agentId != 'undefined' )
+	if( typeof req.query.machineId != 'undefined' )
 	{
-		var agentId = req.query.agentId;
-		var queryString = "UPDATE regi_machines SET heartbeat='1' WHERE machineId='" + agentId + "';";
+		var machineId = req.query.machineId;
+		var queryString = "UPDATE regi_machines SET heartbeat='1' WHERE machineId='" + machineId + "';";
 		var query = connection.query( queryString, function(err, rows){
-			handleResponse( err, res, agentId );
+			handleResponse( err, res, machineId );
 		});
 	}
 });
 
-app.get('/resource/registerAgentId', function(req, res){
-	var agentId = req.query.agentId;
+app.get('/resource/registerMachineId', function(req, res){
+	var machineId = req.query.machineId;
 	var deviceType = req.query.deviceType;
 	var queryString = "INSERT INTO regi_machines (status,type,userId) SELECT 'idle','" + deviceType + "',userId FROM user WHERE userName = 'mascloud';";
 	var query = connection.query( queryString, function(err, rows){
@@ -66,57 +70,73 @@ app.get('/resource/registerAgentId', function(req, res){
 	});
 });
 
-app.get('/resource/launchAgent', function(req, res){
-	var agentId = req.query.agentId;
+app.get('/resource/launchMachine', function(req, res){
+	var machineId = req.query.machineId;
 	var userId = req.query.userId;
-	var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='5' WHERE machineId='" + agentId + "';";
+	var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='5' WHERE machineId='" + machineId + "';";
 	var query = connection.query( queryString, function(err, rows){
-		handleResponse( err, res, agentId );
-		exec("curl http://localhost:8000/resource/updateLaunchedAgent?agentId='" + agentId + "'", function (error, stdout, stderr) {
+		handleResponse( err, res, machineId );
+		exec("curl http://localhost:8000/resource/updateLaunchedMachine?machineId='" + machineId + "'", function (error, stdout, stderr) {
 		  	// output is in stdout
-			if( stdout == '"' + agentId + '"' ){
-				console.log( "launchAgent: " + stdout );
+			if( stdout == '"' + machineId + '"' ){
+				console.log( "launchMachine: " + stdout );
 			}
 			else{
-				console.log( "launchAgent: Command execution failed" );
+				console.log( "launchMachine: Command execution failed" );
 			}			
 		});
 	});
 });
 
-app.get('/resource/terminateAgent', function(req, res){
-	var agentId = req.query.agentId;
+app.get('/resource/terminateMachine', function(req, res){
+	var machineId = req.query.machineId;
 	var userId = req.query.userId;
-	var queryString = "UPDATE regi_machines SET status='terminating',timeout='5' WHERE machineId='" + agentId + "';";
+	var queryString = "UPDATE regi_machines SET status='terminating',timeout='5' WHERE machineId='" + machineId + "';";
 	var query = connection.query( queryString, function(err, rows){
-		handleResponse( err, res, agentId );
-		exec("curl http://localhost:8000/resource/updateTerminatedAgent?agentId='" + agentId + "'", function (error, stdout, stderr) {
+		handleResponse( err, res, machineId );
+		exec("curl http://localhost:8000/resource/updateTerminatedMachine?machineId='" + machineId + "'", function (error, stdout, stderr) {
 		  	// output is in stdout
-			if( stdout == '"' + agentId + '"' ){
-				console.log( "terminateAgent: " + stdout );
+			if( stdout == '"' + machineId + '"' ){
+				console.log( "terminateMachine: " + stdout );
 			}
 			else{
-				console.log( "terminateAgent: Command execution failed" );
+				console.log( "terminateMachine: Command execution failed" );
 			}
 		});
 	});
 });
 
-app.get('/resource/updateLaunchedAgent', function(req, res){
-	var agentId = req.query.agentId;
-	var queryString = "UPDATE regi_machines SET status='launched' WHERE machineId='" + agentId + "';";
+app.get('/resource/increaseMachine', function(req, res){
+	var userId = req.query.userId;
+	var queryString = "UPDATE user SET requests=requests + 1 WHERE userId='" + userId + "' AND requests < " + MAX_INSTANCE + ";";
 	var query = connection.query( queryString, function(err, rows){
-		handleResponse( err, res, agentId );
-		updateRecord.updateRecordLaunched( agentId, connection );
+		handleResponse( err, res, 0 );
 	});
 });
 
-app.get('/resource/updateTerminatedAgent', function(req, res){
-	var agentId = req.query.agentId;
-	var queryString = "UPDATE regi_machines SET status='idle',userId='2' WHERE machineId='" + agentId + "';";
+app.get('/resource/decreaseMachine', function(req, res){
+	var userId = req.query.userId;
+	var queryString = "UPDATE user SET requests=requests - 1 WHERE userId='" + userId + "' AND requests > " + MIN_INSTANCE + ";";
 	var query = connection.query( queryString, function(err, rows){
-		handleResponse( err, res, agentId );
-		updateRecord.updateRecordTerminated( agentId, connection );
+		handleResponse( err, res, 0 );	
+	});
+});
+
+app.get('/resource/updateLaunchedMachine', function(req, res){
+	var machineId = req.query.machineId;
+	var queryUpdateLaunchedStatusString = "UPDATE regi_machines SET status='launched' WHERE machineId='" + machineId + "';";
+	connection.query( queryUpdateLaunchedStatusString, function(err, rows){
+		handleResponse( err, res, machineId );
+		updateRecord.updateRecordLaunched( machineId, connection );
+	});
+});
+
+app.get('/resource/updateTerminatedMachine', function(req, res){
+	var machineId = req.query.machineId;
+	var queryUpdateTerminatedStatusString = "UPDATE regi_machines SET status='idle',userId='2' WHERE machineId='" + machineId + "';";
+	connection.query( queryUpdateTerminatedStatusString, function(err, rows){
+		handleResponse( err, res, machineId );
+		updateRecord.updateRecordTerminated( machineId, connection );
 	});
 });
 
