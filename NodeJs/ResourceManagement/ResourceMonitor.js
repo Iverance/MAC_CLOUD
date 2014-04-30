@@ -1,7 +1,7 @@
 ( function() {
 var updateRecord = require('./UpdateRecord.js');
 	
-	var healthReset = '10';
+	var healthReset = '3';
 	var userAdmin ='2';
 	var userSupport = '3';
 	function start( connection ) {
