@@ -1,5 +1,5 @@
 ( function() {
-var updateRecord = require('./UpdateRecord.js');
+var updateRecord = require('./UpdateRecordPackage.js');
 	
 	var healthReset = '3';
 	var userAdmin ='2';
