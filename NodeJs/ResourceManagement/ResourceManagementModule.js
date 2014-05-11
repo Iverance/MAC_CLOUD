@@ -45,6 +45,7 @@ var MIN_INSTANCE =  0;
 app.get('/resource/updateHeartbeat', function(req, res){
 	if( typeof req.query.deviceId != 'undefined' )
 	{
+		console.log( "got heartbeat" );
 		var deviceId = req.query.deviceId;
 		var queryString = "UPDATE regi_machines SET heartbeat='1' WHERE deviceId='" + deviceId + "';";
 		var query = connection.query( queryString, function(err, rows){

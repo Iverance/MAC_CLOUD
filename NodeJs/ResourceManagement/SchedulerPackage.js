@@ -4,6 +4,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 	var healthReset = '2';
 	var userAdmin ='2';
 	var userSupport = '3';
+	var userService = '4';
 	var queryToComplete = 0;
 	var queryToCompleting = 0;	
 
@@ -151,7 +152,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 
 	function resourceAllocating( connection ) {
 		// Write resource allocation here
-		var queryRequestsString = "SELECT userId,requests,running,launching,terminating FROM user;";
+		var queryRequestsString = "SELECT userId,requests,running,launching,terminating FROM user WHERE userId > " + userService + ";";
 		connection.query( queryRequestsString, function(err, rows) {
 			queryToCompleting = 0;
 			if( err )
@@ -160,7 +161,7 @@ var selenium = require('./SeleniumManagerPackage.js');
             }else{
 				for( i = 0; i < rows.length; i++ )
 				{
-					if( rows[i].requests > rows[i].running + rows[i].launching + rows[i].terminating )
+					if( rows[i].requests > rows[i].running + rows[i].launching - rows[i].terminating )
 					{;
 						// Get available devices
 						var queryGetAvailableDevicesString = "SELECT machineId,deviceId,deviceIp,'" + rows[i].userId + "' AS userToUpdateId FROM regi_machines WHERE userId='2' AND status='idle' LIMIT 1";
@@ -188,11 +189,13 @@ var selenium = require('./SeleniumManagerPackage.js');
 							}
 						});
 					}
-					else if( rows[i].requests > rows[i].running + rows[i].launching + rows[i].terminating )
+					else if( rows[i].requests < rows[i].running + rows[i].launching - rows[i].terminating )
 					{
+
+						console.log( "Reqeuest Terminate Device: " + rows[i].userId );
 						// Get running devices							
 						var queryGetRunningDevicesString = "SELECT deviceId,deviceIp,'" + rows[i].userId + "' AS userToUpdateId FROM regi_machines WHERE userId='" + rows[i].userId + "' AND status='launched' LIMIT 1";
-						connection.query( queryGetAvailableDevicesString, function(err, rows) {
+						connection.query( queryGetRunningDevicesString, function(err, rows) {
 							if( err )
 							{
 							        console.log( err );
@@ -203,7 +206,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 								{
 									// Get available devices
 									var queryUpdateString = "UPDATE regi_machines SET status='idle',userId='" + userAdmin + "',timeout='0' WHERE userId='" + rows[0].userToUpdateId + "' AND deviceId='" + rows[0].deviceId + "' LIMIT 1;";
-									console.log( "Launching Device: " + rows[0].deviceId  );
+									console.log( "Terminate Device: " + rows[0].deviceId  );
 									connection.query( queryUpdateString, function(err, rows) {
 										if( err )
 										{

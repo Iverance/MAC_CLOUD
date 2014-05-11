@@ -1,14 +1,18 @@
 ( function() {
 
+	var exec = require('child_process').exec;
+
 	function launchDevice( deviceIp ) {
 		// Launch device here
+		
+		console.log( "curl http://" + deviceIp + ":5566/node/launchMachine" );
 		exec("curl http://" + deviceIp + ":5566/node/launchMachine", function (error, stdout, stderr) {
 		 // output is in stdout
 		 if( stdout == '"' + deviceIp + '"' ){
-		 console.log( "terminateMachine: " + stdout );
+		 	console.log( "launchMachine: " + stdout );
 		 }
 		 else{
-		 console.log( "terminateMachine: Command execution failed" );
+		 	console.log( "launchMachine: Command execution failed" );
 		 }
 		});
 		console.log( 'starting device' );	
