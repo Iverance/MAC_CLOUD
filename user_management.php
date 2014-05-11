@@ -32,6 +32,7 @@
 		<script src="js/jQuery.js"></script>
 		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script src="http://digitalbush.com/files/jquery/watermarkinput/beta1/jquery.watermarkinput.js" type="text/javascript"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<title>MAS Cloud</title>
 	</head>
@@ -78,7 +79,7 @@
 		<br><br>
 
 		<div class="col-md-2" >
-			<!--the category section-->
+			<!--the Side Buttons section-->
 			<div class="list-group center-block" style="margin:10px">
 				<a href="/mac/user_management.php" data-toggle="modal" class="list-group-item active">Edit Profile</a>
 				<a href="#reset_pw" data-toggle="modal" class="list-group-item">Reset Password</a>
@@ -93,42 +94,45 @@
 		</div>
 
 		<div class="col-md-6" >
-			<!--the category section-->
-			<div class="page-header">
-				<h1><?php echo $userName;?> <small>Edit profile</small></h1>
-				<form action="post_node.php" name="edit_pro" method="post">
-					</br>
-					<b>Name: </b>
-					<input type="text" name="email" value="First Name" />
-					<input type="text" name="email" value="Last Name" />
-					</br>
-					</br>
-					<b>Email: </b>
-					<input type="text" name="email" value="<?php echo htmlspecialchars($userMail); ?>" />
-					</br>
-					</br>
-					<div class=pull-right>
-						<a class = "btn btn-primary" data-dismiss = "modal" onclick="submitIntstanceType();">Confirm</a>
-						<a href="user_management.php" class = "btn btn-default" data-dismiss = "modal">Cancel</a>
-					</div>
-					<script type="text/javascript">
-						function submitIntstanceType() {
-							document.edit_pro.submit();
+			<!--the main form section-->
+			<font color="red">
+				<center>
+					<?php $reasons = array("wrongOldPwErr" => "Wrong Old Password! Try it again.", "DBErr" => "Unexpected inner error, try it again.");
+					    if (isset($_GET['restPwFailed'])) {
+							echo $reasons[$_GET['reason']];
 						}
-					</script>
-				</form>	
+					?>
+				</center>
+			</font>
+			<div class="page-header">
+				<h1><?php echo $userName;?> <small>Edit profile</small></h1>	
 			</div>
-
+			<form action="edit_user.php"  name="edit_pro" method="post">
+				</br>
+				<b>Name: </b>
+				<input type="text" id="firstName" name="firstName" value="First Name" />
+				<input type="text" id="lastName" name="lastName" value="Last Name" />
+				</br>
+				</br>
+				<b>Email: </b>
+				<input type="email" id="email" name="email" value="<?php echo htmlspecialchars($userMail); ?>" />
+				</br>
+				</br>
+				<div class=pull-right>
+					<input data-dismiss = "modal" class = "btn btn-primary" type="submit" value="Confirm"/>
+				</div>
+			</form>
 		</div>
 		
-		<form name="reset_pw" method="post">
+		<form action="reset_pw.php" name="reset_pw" method="post">
 			<div class = "modal fade" id = "reset_pw" role ="dialog">
 				<div class ="modal-dialog">
 					<div class = "modal-content">
 						<div class = "modal-header">
 							<h4>Reset the Password</h4>
 						</div>
-						<div class ="modal-body">						
+						<div class ="modal-body">
+							<b><p id="warning" style=color:red></p></b>
 							<b>Enter your old password</b>
 							<input type="text" name="old_pw" id="old_pw"  maxlength="20"/><br><br>
 							<b>Enter your new password</b>
@@ -138,15 +142,24 @@
 						</div>
 						<div class = "modal-footer">
 							<a class = "btn btn-default" data-dismiss = "modal">Cancel</a>
-							<a class = "btn btn-primary" data-dismiss = "modal" onclick="submitResetPw();">Confirm</a>
+							<a class = "btn btn-primary" onclick="submitResetPw();">Confirm</a>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<script type="text/javascript">
+ 			$("#firstName").Watermark("First Name");
+			$("#lastName").Watermark("Last Name");
 			function submitResetPw() {
+				new_pw = document.getElementById("new_pw").value;
+				new_pw_con = document.getElementById("new_pw_con").value;
+				if(new_pw!=new_pw_con) {
+					alert("Your new password confirmation is incorrect!");
+					return false;
+				}else {
 				document.reset_pw.submit();
+				}
 			}
 			</script>
 		</form>	

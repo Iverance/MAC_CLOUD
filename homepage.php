@@ -9,7 +9,8 @@
 	}else {
 		header("location: login.php");
 	}
-	
+	$q = "SELECT * FROM regi_machines WHERE userId = '".$_SESSION['userId']."';";
+	$result=mysqli_query($con,$q) or die(mysqli_error());
 	/* free result set */
 			//$result->close();
 	mysqli_close($con);
@@ -17,14 +18,18 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
+	<head>
 		<script src="js/jQuery.js"></script>
-		<script type="text/javascript" src="http://www.websnapr.com/js/websnapr.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<title>MAS Cloud</title>
+		<script language=javascript>
+        function addTDclass() {
+            document.getElementById("stat").value = "green";
+        }
+    </script>
 	</head>
-	<body class="mainBGcolor">
+	<body class="mainBGcolor" onload="addTDclass();">
 	
 	<!-- NAVIGATION BAR -->
 		<nav class="navbar navbar-default" role="navigation">
@@ -75,22 +80,24 @@
 				    <th>Status</th>    
 				  </tr>  
 				</thead>  
-				<tbody>  
-				  <tr>  
-				    <td>001</td>  
-				    <td>Android </td>  
-				    <td><span class="label label-success">Available</span></td>    
-				  </tr>  
-				  <tr>  
-				    <td>002</td>  
-				    <td>IOS</td>  
-				    <td><span class="label label-warning">Launching...</span></td>   
-				  </tr>  
-				  <tr>  
-				    <td>003</td>  
-				    <td>Windows Phone</td>  
-				    <td><span class="label label-danger">Stop</span></td>   
-				  </tr>  
+				<tbody>
+					<?php
+					while($row = mysqli_fetch_assoc($result)){
+						if($row['type'] == 'and') {
+							$type = 'Android';
+						}elseif($row['type'] == ''){
+						}else{
+						}
+		
+						if($row['status'] == 'launching') {
+							$class = 'class="label label-warning"';
+							$stat='Launching...';
+						}elseif($row['status'] == ''){
+						}else{
+						}
+						echo "<tr><td>".$row['machineId']."</td><td id='type'>".$type."</td><td><span id='stat' $class '>".$stat."</span></td></tr>";
+					}
+					?>
 				</tbody>  
 			</table>
 			<br>
