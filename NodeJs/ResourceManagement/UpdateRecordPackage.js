@@ -1,6 +1,7 @@
 ( function() {
 var selenium = require('./SeleniumManagerPackage.js');
 var updateRecord = require('./UpdateRecordPackage.js');
+var util = require('./UtilPackage.js');
 var exec = require('child_process').exec;
 
 	function updateRecordLaunched( deviceId, connection ) {	
