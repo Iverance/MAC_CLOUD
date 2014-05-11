@@ -32,15 +32,6 @@ var exec = require('child_process').exec;
 		var query = connection.query( queryString, function(err, rows){
 			util.handleResponse( err, res, deviceId );
 			selenium.launchDevice( deviceId );
-			exec("curl http://localhost:8000/resource/updateLaunchedMachine?deviceId='" + deviceId + "'", function (error, stdout, stderr) {
-			  	// output is in stdout
-				if( stdout == '"' + deviceId + '"' ){
-					console.log( "launchMachine: " + stdout );
-				}
-				else{
-					console.log( "launchMachine: Command execution failed" );
-				}			
-			});
 		});					
 	}
 
@@ -49,15 +40,6 @@ var exec = require('child_process').exec;
 		var query = connection.query( queryString, function(err, rows){
 			util.handleResponse( err, res, deviceId );
 			selenium.stopDevice( deviceId );
-			exec("curl http://localhost:8000/resource/updateTerminatedMachine?deviceId='" + deviceId + "'", function (error, stdout, stderr) {
-			  	// output is in stdout
-				if( stdout == '"' + deviceId + '"' ){
-					console.log( "terminateMachine: " + stdout );
-				}
-				else{
-					console.log( "terminateMachine: Command execution failed" );
-				}
-			});
 		});			
 	}
 

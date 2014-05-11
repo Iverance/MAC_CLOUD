@@ -56,26 +56,31 @@ app.get('/resource/updateHeartbeat', function(req, res){
 app.get('/resource/registerDevice', function(req, res){
 	var deviceId = req.query.deviceId;
 	var deviceType = req.query.deviceType;
-	var queryString = "INSERT INTO regi_machines (status,type,deviceId,userId) SELECT 'idle','" + deviceType + "', '" + deviceId + "',userId FROM user WHERE userName = 'mascloud';";
+	var deviceIp = req.query.deviceIp;
+	var queryString = "INSERT INTO regi_machines (status,type,deviceId,deviceIp,userId) SELECT 'idle','" + deviceType + "', '"  + deviceIp + "', '" + deviceId + "',userId FROM user WHERE userName = 'mascloud';";
 	var query = connection.query( queryString, function(err, rows){
 		util.handleResponse( err, res, rows.insertId );
 	});
 });
 
 app.get('/resource/launchMachine', function(req, res){
-	updateRecord.launchMachine( req.query.deviceId, req.query.userId, res, connection );
+	updateRecord.launchMachine( req.query.deviceId, req.query.deviceIp, req.query.userId );
+	util.handleResponse( err, res, req.query.deviceId );
 });
 
 app.get('/resource/terminateMachine', function(req, res){
-	updateRecord.terminateMachine( req.query.deviceId, res, connection );
+	updateRecord.terminateMachine( req.query.deviceId, res );
+	util.handleResponse( err, res, req.query.deviceId );
 });
 
 app.get('/resource/launchApp', function(req, res){
-	selenium.launchApp( req.query.deviceId );
+	selenium.launchApp( req.query.deviceId, req.query.deviceIp );
+	util.handleResponse( err, res, req.query.deviceId );	
 });
 
 app.get('/resource/terminateApp', function(req, res){
 	selenium.terminateApp( req.query.deviceId );
+	util.handleResponse( err, res, req.query.deviceId );
 });
 
 app.get('/resource/launchedApp', function(req, res){

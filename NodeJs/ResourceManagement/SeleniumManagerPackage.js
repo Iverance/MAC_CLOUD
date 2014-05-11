@@ -1,6 +1,6 @@
 ( function() {
 
-	function launchDevice( deviceId ) {
+	function launchDevice( deviceId, deviceIp ) {
 		// Launch device here
 		console.log( 'starting device' );	
 	}
@@ -10,7 +10,7 @@
 		console.log( 'stopping device' );	
 	}
 
-	function launchApp( deviceId ) {
+	function launchApp( deviceId, deviceIp ) {
 		// Launch app here
 		console.log( 'Starting app' );	
 	}
