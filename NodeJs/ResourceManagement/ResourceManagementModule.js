@@ -68,17 +68,17 @@ app.get('/resource/launchMachine', function(req, res){
 });
 
 app.get('/resource/terminateMachine', function(req, res){
-	updateRecord.terminateMachine( req.query.deviceId, res, connection );
+	updateRecord.terminateMachine( req.query.deviceId, req.query.deviceIp, res, connection );
 });
 
 app.get('/resource/launchApp', function(req, res){
-	selenium.launchApp( req.query.deviceId, req.query.deviceIp );
-	util.handleResponse( err, res, req.query.deviceId );	
+	selenium.launchApp( req.query.deviceIp );
+	util.handleResponse( err, res, req.query.deviceIp );	
 });
 
 app.get('/resource/terminateApp', function(req, res){
-	selenium.terminateApp( req.query.deviceId );
-	util.handleResponse( err, res, req.query.deviceId );
+	selenium.terminateApp( req.query.deviceIp );
+	util.handleResponse( err, res, req.query.deviceIp );
 });
 
 app.get('/resource/launchedApp', function(req, res){

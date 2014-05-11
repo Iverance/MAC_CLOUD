@@ -1,22 +1,58 @@
 ( function() {
 
-	function launchDevice( deviceId, deviceIp ) {
+	function launchDevice( deviceIp ) {
 		// Launch device here
+		exec("curl http://" + deviceIp + ":5566/node/launchMachine", function (error, stdout, stderr) {
+		 // output is in stdout
+		 if( stdout == '"' + deviceIp + '"' ){
+		 console.log( "terminateMachine: " + stdout );
+		 }
+		 else{
+		 console.log( "terminateMachine: Command execution failed" );
+		 }
+		});
 		console.log( 'starting device' );	
 	}
 
-	function terminateDevice( deviceId ) {
+	function terminateDevice( deviceIp ) {
 		// stop device here	
+		exec("curl http://" + deviceIp + ":5566/node/terminateMachine", function (error, stdout, stderr) {
+		 // output is in stdout
+		 if( stdout == '"' + deviceIp + '"' ){
+		 console.log( "terminateMachine: " + stdout );
+		 }
+		 else{
+		 console.log( "terminateMachine: Command execution failed" );
+		 }
+		});
 		console.log( 'stopping device' );	
 	}
 
-	function launchApp( deviceId, deviceIp ) {
+	function launchApp( deviceIp ) {
 		// Launch app here
+		exec("curl http://" + deviceIp + ":5566/node/launchApp", function (error, stdout, stderr) {
+		 // output is in stdout
+		 if( stdout == '"' + deviceIp + '"' ){
+		 console.log( "terminateMachine: " + stdout );
+		 }
+		 else{
+		 console.log( "terminateMachine: Command execution failed" );
+		 }
+		});
 		console.log( 'Starting app' );	
 	}
 
-	function terminateApp( deviceId ) {
-		// stop app here	
+	function terminateApp( deviceIp ) {
+		// stop app here
+		exec("curl http://" + deviceIp + ":5566/node/terminateApp", function (error, stdout, stderr) {
+		 // output is in stdout
+		 if( stdout == '"' + deviceIp + '"' ){
+		 console.log( "terminateMachine: " + stdout );
+		 }
+		 else{
+		 console.log( "terminateMachine: Command execution failed" );
+		 }
+		});	
 		console.log( 'Stopping app' );
 	}
 

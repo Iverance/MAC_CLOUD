@@ -28,18 +28,18 @@ var exec = require('child_process').exec;
 	}
 
 	function launchMachine( deviceId, deviceIp, userId, res, connection ) {
-		var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='5' WHERE deviceId='" + deviceId + "';";
+		var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='60' WHERE deviceId='" + deviceId + "';";
 		var query = connection.query( queryString, function(err, rows){
 			util.handleResponse( err, res, deviceId );
-			selenium.launchDevice( deviceId, deviceIp );
+			selenium.launchDevice( deviceIp );
 		});					
 	}
 
-	function terminateMachine( deviceId, res, connection ) {
-		var queryString = "UPDATE regi_machines SET status='terminating',timeout='5' WHERE deviceId='" + deviceId + "';";
+	function terminateMachine( deviceId, deviceIp, res, connection ) {
+		var queryString = "UPDATE regi_machines SET status='terminating',timeout='60' WHERE deviceId='" + deviceId + "';";
 		var query = connection.query( queryString, function(err, rows){
 			util.handleResponse( err, res, deviceId );
-			selenium.terminateDevice( deviceId );
+			selenium.terminateDevice( deviceIp );
 		});			
 	}
 

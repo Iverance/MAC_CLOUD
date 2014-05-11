@@ -183,7 +183,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 										}									
 									});
 									// Launch device
-									selenium.launchDevice( rows[0].deviceId, rows[0].deviceIp );	
+									selenium.launchDevice( rows[0].deviceIp );	
 								}
 							}
 						});
@@ -191,7 +191,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 					else if( rows[i].requests > rows[i].running + rows[i].launching + rows[i].terminating )
 					{
 						// Get running devices							
-						var queryGetRunningDevicesString = "SELECT deviceId,'" + rows[i].userId + "' AS userToUpdateId FROM regi_machines WHERE userId='" + rows[i].userId + "' AND status='launched' LIMIT 1";
+						var queryGetRunningDevicesString = "SELECT deviceId,deviceIp,'" + rows[i].userId + "' AS userToUpdateId FROM regi_machines WHERE userId='" + rows[i].userId + "' AND status='launched' LIMIT 1";
 						connection.query( queryGetAvailableDevicesString, function(err, rows) {
 							if( err )
 							{
@@ -211,7 +211,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 										}									
 									});
 									// Launch device
-									selenium.terminateDevice( rows[0].deviceId );	
+									selenium.terminateDevice( rows[0].deviceIp );	
 								}
 							}
 						});					
