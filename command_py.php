@@ -6,7 +6,7 @@
 	{	
 		if(isset($_SESSION['username'])) {
 			$userName = "".$_SESSION['username']."";
-			$result_user=$con->query("SELECT * FROM user WHERE name='$userName'");
+			$result_user=$con->query("SELECT * FROM user WHERE userName='$userName'");
 
 			if (!$result_user) 
 			{
@@ -16,7 +16,7 @@
 			else 
 			{
 				$user_info=mysqli_fetch_array($result_user);
-				$userId = $user_info['id'];
+				$userId = $user_info['userId'];
 				echo $userId;
 			}
 		}

@@ -22,18 +22,19 @@ $count=mysql_num_rows($result);
 
 // If result matched $myusername and $mypassword, table row must be 1 row
 if($count==1){
-	
     // Register $username, $password and redirect to file "homepage.php"
-    /*following functions are deprecated in PHP 5.4+
-	session_register("username");
-    session_register("password");*/
+    /*following functions are deprecated in PHP 5.4+*/
+	$user_info=mysql_fetch_array($result, MYSQL_BOTH);
+	$id = $user_info['userId'];
+
 	$_SESSION['username']=$username; 
-	$_SESSION['password']=$password; 
+	$_SESSION['password']=$password;
+	$_SESSION['userId']=$id;
     header("location: homepage.php");
 
 	
 } else {
-    die(header("location:index.php?loginFailed=true&reason=passwordErr"));   
+    die(header("location:login.php?loginFailed=true&reason=passwordErr"));   
 	
 }
 

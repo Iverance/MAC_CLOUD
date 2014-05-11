@@ -64,13 +64,11 @@ app.get('/resource/registerDevice', function(req, res){
 });
 
 app.get('/resource/launchMachine', function(req, res){
-	updateRecord.launchMachine( req.query.deviceId, req.query.deviceIp, req.query.userId );
-	util.handleResponse( err, res, req.query.deviceId );
+	updateRecord.launchMachine( req.query.deviceId, req.query.deviceIp, req.query.userId, res, connection );
 });
 
 app.get('/resource/terminateMachine', function(req, res){
-	updateRecord.terminateMachine( req.query.deviceId, res );
-	util.handleResponse( err, res, req.query.deviceId );
+	updateRecord.terminateMachine( req.query.deviceId, res, connection );
 });
 
 app.get('/resource/launchApp', function(req, res){

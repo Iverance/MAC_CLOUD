@@ -13,9 +13,9 @@ var updateRecord = require('./UpdateRecordPackage.js');
 			var query = connection.query( queryGetHealth, function(err, rows){
 
 				if( err ){
-                                        console.log( err );
-                                }else{
-                                        console.log( rows );
+					console.log( err );
+				}else{
+					console.log( rows );
 					for( i = 0; i < rows.length; i++ )
 					{
 						var timeout = parseInt( rows[i].timeout );
