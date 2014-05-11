@@ -57,9 +57,16 @@ app.get('/resource/registerDevice', function(req, res){
 	var deviceId = req.query.deviceId;
 	var deviceType = req.query.deviceType;
 	var deviceIp = req.query.deviceIp;
-	var queryString = "INSERT INTO regi_machines (status,type,deviceId,deviceIp,userId) SELECT 'idle','" + deviceType + "', '"  + deviceIp + "', '" + deviceId + "',userId FROM user WHERE userName = 'mascloud';";
+	
+	var queryString = "SELECT regi_machines.* FROM mac_web.regi_machines WHERE deviceId='" + deviceId + "';";
 	var query = connection.query( queryString, function(err, rows){
-		util.handleResponse( err, res, rows.insertId );
+		if( rows.length == 0 )
+		{
+			var queryString = "INSERT INTO regi_machines (status,type,deviceId,deviceIp,userId) SELECT 'idle','" + deviceType + "', '"  + deviceIp + "', '" + deviceId + "',userId FROM user WHERE userName = 'mascloud';";
+			var query = connection.query( queryString, function(err, rows){
+				util.handleResponse( err, res, rows.insertId );
+			});
+		}
 	});
 });
 
