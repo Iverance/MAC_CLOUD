@@ -37,10 +37,10 @@
 		exec("curl http://" + deviceIp + ":5566/node/launchApp", function (error, stdout, stderr) {
 		 // output is in stdout
 		 if( stdout == '"' + deviceIp + '"' ){
-		 console.log( "terminateMachine: " + stdout );
+		 console.log( "launchApp: " + stdout );
 		 }
 		 else{
-		 console.log( "terminateMachine: Command execution failed" );
+		 console.log( "launchApp: Command execution failed" );
 		 }
 		});
 		console.log( 'Starting app' );	
@@ -51,10 +51,10 @@
 		exec("curl http://" + deviceIp + ":5566/node/terminateApp", function (error, stdout, stderr) {
 		 // output is in stdout
 		 if( stdout == '"' + deviceIp + '"' ){
-		 console.log( "terminateMachine: " + stdout );
+		 console.log( "terminateApp: " + stdout );
 		 }
 		 else{
-		 console.log( "terminateMachine: Command execution failed" );
+		 console.log( "terminateApp: Command execution failed" );
 		 }
 		});	
 		console.log( 'Stopping app' );

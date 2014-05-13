@@ -235,7 +235,7 @@ var selenium = require('./SeleniumManagerPackage.js');
 			
 			countLaunchedDevices( connection );
 
-		}, 5000);
+		}, 10000);
 	}
 
 	module.exports.start = start;

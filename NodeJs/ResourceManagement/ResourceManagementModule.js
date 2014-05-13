@@ -81,25 +81,37 @@ app.get('/resource/terminateMachine', function(req, res){
 
 app.get('/resource/launchApp', function(req, res){
 	selenium.launchApp( req.query.deviceIp );
-	util.handleResponse( err, res, req.query.deviceIp );	
+	res.send( req.query.deviceIp );	
 });
 
 app.get('/resource/terminateApp', function(req, res){
 	selenium.terminateApp( req.query.deviceIp );
-	util.handleResponse( err, res, req.query.deviceIp );
+	res.send( req.query.deviceIp );	
 });
 
 app.get('/resource/launchedApp', function(req, res){
-	var queryUpdateLaunchedStatusString = "UPDATE regi_machines SET launchedApp='1' WHERE deviceId='" + req.query.deviceId + "';";
-	connection.query( queryUpdateLaunchedStatusString, function(err, rows){
-		util.handleResponse( err, res, deviceId );
+	var queryMachineId="SELECT machineId FROM regi_machines WHERE deviceId='" + req.query.deviceId + "';";
+	connection.query( queryMachineId, function(err, rows){		
+		if( rows.length > 0 )
+		{
+			var queryUpdateLaunchedStatusString = "UPDATE regi_machines SET appLaunched='1' WHERE machineId='" + rows[0].machineId + "';";
+			connection.query( queryUpdateLaunchedStatusString, function(err, rows){
+				util.handleResponse( err, res, deviceId );
+			});
+		}
 	});
 });
 
 app.get('/resource/terminatedApp', function(req, res){
-	var queryUpdateLaunchedStatusString = "UPDATE regi_machines SET launchedApp='0' WHERE deviceId='" + req.query.deviceId + "';";
-	connection.query( queryUpdateLaunchedStatusString, function(err, rows){
-		util.handleResponse( err, res, deviceId );
+	var queryMachineId="SELECT machineId FROM regi_machines WHERE deviceId='" + req.query.deviceId + "';";
+	connection.query( queryMachineId, function(err, rows){		
+		if( rows.length > 0 )
+		{
+			var queryUpdateLaunchedStatusString = "UPDATE regi_machines SET appLaunched='0' WHERE machineId='" + rows[0].machineId + "';";
+			connection.query( queryUpdateLaunchedStatusString, function(err, rows){
+				util.handleResponse( err, res, deviceId );
+			});
+		}
 	});
 });
 

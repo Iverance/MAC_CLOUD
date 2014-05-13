@@ -104,7 +104,7 @@ var updateRecord = require('./UpdateRecordPackage.js');
                 			}
         			});
 			});
-		}, 5000);
+		}, 10000);
 	}
 
 	module.exports.start = start;
