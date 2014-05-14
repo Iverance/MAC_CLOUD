@@ -2,7 +2,8 @@
 	session_start();
     include ("db_config.php");
     
-
+	$lastMonth = 0;
+	$curMonth = 0;
 	
 	if(isset($_SESSION['username'])) {
 		$userName = "".$_SESSION['username']."";
@@ -10,18 +11,23 @@
 	}
 	$month = date("m")+0;
 	$month = $month-1;
-	$query = "SELECT * from statements where billingDate >= '2014-0".$month."-01' and billingDate <= '2014-0".$month."-30';";
+	$query = "SELECT * from statements where billingDate >= '2014-0".$month."-01' and billingDate <= '2014-0".$month."-30' AND userId =".$userId.";";
+	
 	$result=mysqli_query($con,$query) or die(mysql_error());
-	while($row = mysqli_fetch_assoc($result)){
-		$lastMonth = $row['amount'] + $lastMonth;
-	  }
-	$month = $month+1;
-	$query = "SELECT * from statements where billingDate >= '2014-0".$month."-01' and billingDate <= '2014-0".$month."-30';";
-	$result=mysqli_query($con,$query) or die(mysql_error());
-	while($row = mysqli_fetch_assoc($result)){
-		$curMonth = $row['amount'] + $curMonth;
+	if($result) {
+		while($row = mysqli_fetch_assoc($result)){
+			$lastMonth = $row['amount'] + $lastMonth;
+			}
 	}
-
+	$month = $month+1;
+	$query = "SELECT * from statements where billingDate >= '2014-0".$month."-01' and billingDate <= '2014-0".$month."-30' AND userId =".$userId.";";
+	
+	$result=mysqli_query($con,$query) or die(mysql_error());
+	if($result) {
+		while($row = mysqli_fetch_assoc($result)){
+			$curMonth = $row['amount'] + $curMonth;
+		}
+	}
 	mysqli_close($con);
 ?>
 
@@ -98,7 +104,7 @@
 			<div class="page-header">
 				<h1><?php echo $userName;?> <small>Billing Management</small></h1>	
 			</div>
-			<div id="container" style="width:100%; height:400px;">
+			<div id="container" style="width:100%; height:300px;">
 				<script>
 					$(function () { 
 							$('#container').highcharts({
@@ -118,7 +124,7 @@
 									},
 									series: [{
 										  name: "This month",
-										  data: [0, "<?php echo $curMonth;?>"]
+										  data: [0, parseInt("<?php echo $curMonth; ?>")]
 									},	{
 										  name: "Last month",
 										  data: [parseInt("<?php echo $lastMonth; ?>"),0]

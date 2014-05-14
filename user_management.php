@@ -134,11 +134,11 @@
 						<div class ="modal-body">
 							<b><p id="warning" style=color:red></p></b>
 							<b>Enter your old password</b>
-							<input type="text" name="old_pw" id="old_pw"  maxlength="20"/><br><br>
+							<input type="password" placeholder="Old Password" name="old_pw" id="old_pw"  maxlength="20"/><br><br>
 							<b>Enter your new password</b>
-							<input type="text" name="new_pw" id="new_pw"  maxlength="20"/><br><br>
+							<input type="password" placeholder="New Password" name="new_pw" id="new_pw"  maxlength="20"/><br><br>
 							<b>Confirm your new password</b>										
-							<input type="text" name="new_pw_con" id="new_pw_con"  maxlength="20"/><br><br>
+							<input type="password" placeholder="Confirm New Password" name="new_pw_con" id="new_pw_con"  maxlength="20"/><br><br>
 						</div>
 						<div class = "modal-footer">
 							<a class = "btn btn-default" data-dismiss = "modal">Cancel</a>
