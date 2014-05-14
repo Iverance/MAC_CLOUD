@@ -1,6 +1,7 @@
 ( function() {
 var selenium = require('./SeleniumManagerPackage.js');
 var updateRecord = require('./UpdateRecordPackage.js');
+var util = require('./UtilPackage.js');
 var exec = require('child_process').exec;
 
 	function updateRecordLaunched( deviceId, connection ) {	
@@ -27,37 +28,20 @@ var exec = require('child_process').exec;
 			
 	}
 
-	function launchMachine( deviceId, userId, res, connection ) {
-		var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='5' WHERE deviceId='" + deviceId + "';";
+	function launchMachine( deviceId, deviceIp, userId, res, connection ) {
+		var queryString = "UPDATE regi_machines SET status='launching',userId='" + userId + "',timeout='60' WHERE deviceId='" + deviceId + "';";
 		var query = connection.query( queryString, function(err, rows){
+			console.log( 'prepare to send rest' );
+			selenium.launchDevice( deviceIp );
 			util.handleResponse( err, res, deviceId );
-			selenium.launchDevice( deviceId );
-			//exec("curl http://localhost:8000/resource/updateLaunchedMachine?deviceId='" + deviceId + "'", function (error, stdout, stderr) {
-			//  	// output is in stdout
-			//	if( stdout == '"' + deviceId + '"' ){
-			//		console.log( "launchMachine: " + stdout );
-			//	}
-			//	else{
-			//		console.log( "launchMachine: Command execution failed" );
-			//	}			
-			//});
 		});					
 	}
 
-	function terminateMachine( deviceId, res, connection ) {
-		var queryString = "UPDATE regi_machines SET status='terminating',timeout='5' WHERE deviceId='" + deviceId + "';";
+	function terminateMachine( deviceId, deviceIp, res, connection ) {
+		var queryString = "UPDATE regi_machines SET status='terminating',timeout='60' WHERE deviceId='" + deviceId + "';";
 		var query = connection.query( queryString, function(err, rows){
+			selenium.terminateDevice( deviceIp );
 			util.handleResponse( err, res, deviceId );
-			selenium.stopDevice( deviceId );
-			//exec("curl http://localhost:8000/resource/updateTerminatedMachine?deviceId='" + deviceId + "'", function (error, stdout, stderr) {
-			//  	// output is in stdout
-			//	if( stdout == '"' + deviceId + '"' ){
-			//		console.log( "terminateMachine: " + stdout );
-			//	}
-			//	else{
-			//		console.log( "terminateMachine: Command execution failed" );
-			//	}
-			//});
 		});			
 	}
 
