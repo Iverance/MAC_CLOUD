@@ -156,7 +156,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.php" >MyTacks Inc.</a>
+          <a class="navbar-brand" href="index.php" >Mas Cloud.</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -223,7 +223,7 @@
         </li>
       </ul>
     </div>
-    <p align="center">MyTacksSystem.com was crafted by Scales Inc. DB Hosted on <a href="http://aws.amazon.com/rds/" target="_blank" title="Amazon RDS Cloud Hosting"><img src="http://www.cloudreviews.com/blog/wp-content/uploads/2013/06/rds_logo1_300x100.png" alt = "AWS RDS" height="42" width="120"></a></p>
+    <p align="center">MasCloud.com was crafted by Scales Inc. DB Hosted on <a href="http://aws.amazon.com/rds/" target="_blank" title="Amazon RDS Cloud Hosting"><img src="http://www.cloudreviews.com/blog/wp-content/uploads/2013/06/rds_logo1_300x100.png" alt = "AWS RDS" height="42" width="120"></a></p>
   </div>
 </footer>
     

@@ -1,6 +1,6 @@
 <?php
 	session_start();
-    include ("db_config.php");
+  include ("db_config.php");
     
 
 	
@@ -13,13 +13,14 @@
 	$result=mysqli_query($con,$q) or die(mysqli_error());
 	/* free result set */
 			//$result->close();
+
 	mysqli_close($con);
 ?>
 
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="js/jQuery.js"></script>
+		<script type="text/javascript" src="js/jQuery.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<title>MAS Cloud</title>
@@ -72,12 +73,14 @@
 		
 		<div class="col-md-9">
 			<h1>Instances status</h1>		
-			<table class="table table-striped">  
+			<table class="table table-striped"  id="machineTb">  
 				<thead>  
 				  <tr>  
 				    <th>Instance ID</th>  
 				    <th>Type</th>  
-				    <th>Status</th>    
+				    <th>Status</th>
+						<th></th>
+						<th></th>
 				  </tr>  
 				</thead>  
 				<tbody>
@@ -92,19 +95,50 @@
 						if($row['status'] == 'launching') {
 							$class = 'class="label label-warning"';
 							$stat='Launching...';
-						}elseif($row['status'] == ''){
+						}elseif($row['status'] == 'launched'){
+							$class = 'class="label label-success"';
+							$stat='Available';
 						}else{
+							$class = 'class="label label-danger"';
+							$stat='Stop';
 						}
-						echo "<tr><td>".$row['machineId']."</td><td id='type'>".$type."</td><td><span id='stat' $class '>".$stat."</span></td></tr>";
+						echo "<tr><td><span id='mId'>".$row['machineId']."</td><td id='type'>".$type."</td><td><span id='stat' $class '>".$stat."</span></td><td><a href='launch.php?send=false'>Delete</a></td><td><a href='launch.php?app=".$row['machineId']."'>Run App</a></td></tr>";
 					}
 					?>
 				</tbody>  
 			</table>
 			<br>
-			<a href="#launch_ins" data-toggle="modal">
+			<a href="launch.php?send=true" data-toggle="modal">
 				<button type="button" class="btn btn-default">Launch new instance</button>
 			</a>
+			<p class="red"><?php if (isset($_GET['Err'])) {echo $_GET['Err'];} ?></p>
 		</div>
+		
+
+		<script>
+			var instanceId;
+			function getInstanceId(){
+				stmntID = $('input[id=mId]:checked').val();
+				var elem = document.getElementById("stmtId");
+				elem.value = stmntID;
+			}
+				
+			var $_GET = {};
+
+			document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+					function decode(s) {
+						  return decodeURIComponent(s.split("+").join(" "));
+					}
+
+					$_GET[decode(arguments[1])] = decode(arguments[2]);
+			});
+
+			if($_GET['success'].length > 1) {
+				if($_GET['success']=="app")	alert('Run new app!');
+				else if($_GET['success']=="ins") alert('Increase an instance!');
+			}
+			
+		</script>
 
 		<!--launch form-->
 		<form action="command_py.php" name="launch_ins" method="post">
@@ -159,5 +193,5 @@
 			</script>
 		</form>	
 	</body>
-
+	
 </html>

@@ -1,4 +1,6 @@
 <?php
+	
+	$resourceNode = "http://192.168.0.176:8000/";
 		// Create connection
 	$db_host = "freesql.ctijsbuenarr.us-west-2.rds.amazonaws.com";
 	$db_username = "admin";
